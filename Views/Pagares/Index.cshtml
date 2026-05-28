@@ -42,6 +42,9 @@
                                     <a class="btn btn-sm btn-primary" href="/Pagares/Details/@item.Id">Ver</a>
                                     <a class="btn btn-sm btn-warning" href="/Pagares/Edit/@item.Id">Editar</a>
                                     <a class="btn btn-sm btn-danger" href="/Pagares/Delete/@item.Id">Eliminar</a>
+                                    <a asp-action="Pdf" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                         PDF
+                                    </a>
                                 </td>
                             </tr>
                     }

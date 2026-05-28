@@ -4,7 +4,7 @@ using SistemaLegalPagares.Data;
 using SistemaLegalPagares.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-
+using QuestPDF.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +25,7 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
-
+QuestPDF.Settings.License = LicenseType.Community;
 // PIPELINE
 if (!app.Environment.IsDevelopment())
 {

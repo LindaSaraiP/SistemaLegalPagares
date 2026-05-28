@@ -7,6 +7,8 @@ using SistemaLegalPagares.Data;
 using SistemaLegalPagares.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using SistemaLegalPagares.Services.Pdf;
+using QuestPDF.Fluent;
 
 namespace SistemaLegalPagares.Controllers
 {
@@ -180,5 +182,21 @@ namespace SistemaLegalPagares.Controllers
         {
             return _context.Pagares.Any(e => e.Id == id);
         }
+
+        //PDF
+        public async Task<IActionResult> Pdf(int id)
+        {
+            var pagare = await _context.Pagares.FindAsync(id);
+
+            if (pagare == null)
+                return NotFound();
+
+            var document = new PagarePdfDocument(pagare);
+
+            var pdf = document.GeneratePdf();
+
+            return File(pdf, "application/pdf", $"Pagare_{pagare.NumeroExpediente}.pdf");
+        }
+
     }
 }
