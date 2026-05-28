@@ -1,0 +1,56 @@
+@model IEnumerable<SistemaLegalPagares.Models.Pagare>
+
+    @{
+    ViewData["Title"] = "Pagarés";
+    }
+
+    <div class="container mt-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold">Pagarés</h2>
+            <a class="btn btn-success" href="/Pagares/Create">+ Nuevo Pagaré</a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Expediente</th>
+                                <th>Monto</th>
+                                <th>Beneficiario</th>
+                                <th>Suscriptor</th>
+                                <th>Fecha Pago</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                            <tr>
+                                <td>@item.NumeroExpediente</td>
+                                <td>$@item.Monto</td>
+                                <td>@item.NombreBeneficiario</td>
+                                <td>@item.NombreSuscriptor</td>
+                                <td>@item.FechaPago.ToString("yyyy-MM-dd")</td>
+
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="/Pagares/Details/@item.Id">Ver</a>
+                                    <a class="btn btn-sm btn-warning" href="/Pagares/Edit/@item.Id">Editar</a>
+                                    <a class="btn btn-sm btn-danger" href="/Pagares/Delete/@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>

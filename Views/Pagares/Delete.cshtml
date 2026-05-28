@@ -1,0 +1,162 @@
+@*@model SistemaLegalPagares.Models.Pagare
+
+    @{
+        ViewData["Title"] = "Delete";
+    }
+
+    <h1>Delete</h1>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Pagare</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.NumeroExpediente)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.NumeroExpediente)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Monto)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Monto)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.NombreBeneficiario)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.NombreBeneficiario)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.NombreSuscriptor)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.NombreSuscriptor)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.LugarPago)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.LugarPago)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.FechaPago)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.FechaPago)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.LugarSuscripcion)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.LugarSuscripcion)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.FechaSuscripcion)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.FechaSuscripcion)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.FirmaSuscriptor)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.FirmaSuscriptor)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.UsuarioId)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.UsuarioId)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Back to List</a>
+        </form>
+    </div>*@
+
+
+
+@model SistemaLegalPagares.Models.Pagare
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container mt-4">
+
+    <div class="row mb-3">
+        <div class="col">
+            <h2 class="fw-bold text-danger">Eliminar Pagaré</h2>
+            <p class="text-muted">¿Estás seguro de que deseas eliminar este documento?</p>
+        </div>
+    </div>
+
+    <div class="card border-danger shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="mb-3 text-danger">Esta acción no se puede deshacer</h5>
+
+            <dl class="row">
+
+                <dt class="col-sm-3">Número Expediente</dt>
+                <dd class="col-sm-9">@Model.NumeroExpediente</dd>
+
+                <dt class="col-sm-3">Monto</dt>
+                <dd class="col-sm-9">$@Model.Monto</dd>
+
+                <dt class="col-sm-3">Beneficiario</dt>
+                <dd class="col-sm-9">@Model.NombreBeneficiario</dd>
+
+                <dt class="col-sm-3">Suscriptor</dt>
+                <dd class="col-sm-9">@Model.NombreSuscriptor</dd>
+
+                <dt class="col-sm-3">Lugar Pago</dt>
+                <dd class="col-sm-9">@Model.LugarPago</dd>
+
+                <dt class="col-sm-3">Fecha Pago</dt>
+                <dd class="col-sm-9">@Model.FechaPago</dd>
+
+                <dt class="col-sm-3">Lugar Suscripción</dt>
+                <dd class="col-sm-9">@Model.LugarSuscripcion</dd>
+
+                <dt class="col-sm-3">Fecha Suscripción</dt>
+                <dd class="col-sm-9">@Model.FechaSuscripcion</dd>
+
+                <dt class="col-sm-3">Firma</dt>
+                <dd class="col-sm-9">@Model.FirmaSuscriptor</dd>
+
+                <dt class="col-sm-3">Usuario ID</dt>
+                <dd class="col-sm-9 text-break">@Model.UsuarioId</dd>
+
+            </dl>
+
+            <hr />
+
+            <form asp-action="Delete">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn btn-danger">
+                        Sí, eliminar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

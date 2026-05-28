@@ -1,44 +1,83 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SistemaLegalPagares.Data;
+using SistemaLegalPagares.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// SERVICES
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-})
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services
+    .AddDefaultIdentity<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// PIPELINE
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
+
+//  SOLO UN MIDDLEWARE (CORRECTO)
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true)
+    {
+        var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+        var user = await userManager.GetUserAsync(context.User);
+
+        if (user != null)
+        {
+            var isAdmin = await userManager.IsInRoleAsync(user, "Admin");
+
+            if (!user.EstaAprobado && !isAdmin)
+            {
+                await context.SignOutAsync();
+                context.Response.Redirect("/Identity/Account/Login?blocked=true");
+                return;
+            }
+        }
+    }
+
+    await next();
+});
+
 app.UseAuthorization();
 
-
+// ROUTES
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-  
 
+app.MapRazorPages();
+
+// SEED
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await DbInitializer.SeedRolesAndAdminAsync(services);
+}
 
 app.Run();
