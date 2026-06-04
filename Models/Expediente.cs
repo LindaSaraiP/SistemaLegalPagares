@@ -1,4 +1,3 @@
-
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaLegalPagares.Models
@@ -8,8 +7,15 @@ namespace SistemaLegalPagares.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Número de Expediente")]
         public string NumeroExpediente { get; set; } = string.Empty;
 
+        // Nueva relación con Cliente
+        public int? ClienteId { get; set; }
+        public Cliente? Cliente { get; set; }
+
+        // Campos legacy del expediente
+        // Los dejamos por ahora para no romper vistas anteriores
         public string? NombreCliente { get; set; }
 
         public string? CURP { get; set; }

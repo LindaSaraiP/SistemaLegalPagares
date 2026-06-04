@@ -1,4 +1,3 @@
-
 namespace SistemaLegalPagares.Models
 {
     public class PagareDeudor

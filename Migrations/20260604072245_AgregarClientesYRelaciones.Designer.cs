@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaLegalPagares.Data;
 
@@ -11,9 +12,11 @@ using SistemaLegalPagares.Data;
 namespace SistemaLegalPagares.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260604072245_AgregarClientesYRelaciones")]
+    partial class AgregarClientesYRelaciones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,44 +230,6 @@ namespace SistemaLegalPagares.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SistemaLegalPagares.Models.Cliente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CURP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Correo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Direccion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("INE")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NombreCompleto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RFC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clientes");
-                });
-
             modelBuilder.Entity("SistemaLegalPagares.Models.Deudor", b =>
                 {
                     b.Property<int>("Id")
@@ -292,9 +257,6 @@ namespace SistemaLegalPagares.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Poblacion")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RFC")
                         .HasColumnType("nvarchar(max)");
 
@@ -316,9 +278,6 @@ namespace SistemaLegalPagares.Migrations
 
                     b.Property<string>("CURP")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ClienteId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
@@ -346,8 +305,6 @@ namespace SistemaLegalPagares.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
 
                     b.ToTable("Expedientes");
                 });
@@ -431,10 +388,10 @@ namespace SistemaLegalPagares.Migrations
                     b.Property<string>("PoblacionDeudor")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SerieDesde")
+                    b.Property<int?>("SerieDesde")
                         .HasColumnType("int");
 
-                    b.Property<int>("SerieHasta")
+                    b.Property<int?>("SerieHasta")
                         .HasColumnType("int");
 
                     b.Property<string>("TextoLegal")
@@ -543,22 +500,12 @@ namespace SistemaLegalPagares.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SistemaLegalPagares.Models.Expediente", b =>
-                {
-                    b.HasOne("SistemaLegalPagares.Models.Cliente", "Cliente")
-                        .WithMany("Expedientes")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Cliente");
-                });
-
             modelBuilder.Entity("SistemaLegalPagares.Models.Pagare", b =>
                 {
                     b.HasOne("SistemaLegalPagares.Models.Expediente", "Expediente")
                         .WithMany("Pagares")
                         .HasForeignKey("ExpedienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Expediente");
@@ -567,9 +514,9 @@ namespace SistemaLegalPagares.Migrations
             modelBuilder.Entity("SistemaLegalPagares.Models.PagareDeudor", b =>
                 {
                     b.HasOne("SistemaLegalPagares.Models.Deudor", "Deudor")
-                        .WithMany("PagareDeudores")
+                        .WithMany()
                         .HasForeignKey("DeudorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaLegalPagares.Models.Pagare", "Pagare")
@@ -592,16 +539,6 @@ namespace SistemaLegalPagares.Migrations
                         .IsRequired();
 
                     b.Navigation("Pagare");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Cliente", b =>
-                {
-                    b.Navigation("Expedientes");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Deudor", b =>
-                {
-                    b.Navigation("PagareDeudores");
                 });
 
             modelBuilder.Entity("SistemaLegalPagares.Models.Expediente", b =>

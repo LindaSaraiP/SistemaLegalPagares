@@ -1,119 +1,242 @@
 @model SistemaLegalPagares.Models.Pagare
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Vista Previa del Pagaré";
 }
 
-<div class="container mt-4">
+<div class="pagare-formitec">
 
-    <div class="row mb-3">
-        <div class="col">
-            <h2 class="fw-bold">Detalle del Pagaré</h2>
-            <p class="text-muted">Documento legal completo</p>
-        </div>
-    </div>
+    <table class="pagare-tabla">
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
+        <tr class="pagare-header">
 
-            <dl class="row">
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.NumeroExpediente)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.NumeroExpediente)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.Monto)
-                </dt>
-                <dd class="col-sm-9">
-                    <span class="fw-bold text-success">
-                        $@Html.DisplayFor(model => model.Monto)
-                    </span>
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.NombreBeneficiario)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.NombreBeneficiario)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.NombreSuscriptor)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.NombreSuscriptor)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.LugarPago)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.LugarPago)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.FechaPago)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.FechaPago)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.LugarSuscripcion)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.LugarSuscripcion)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.FechaSuscripcion)
-                </dt>
-                <dd class="col-sm-9">
-                    @Html.DisplayFor(model => model.FechaSuscripcion)
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.FirmaSuscriptor)
-                </dt>
-                <dd class="col-sm-9">
-                    <div class="border rounded p-2 bg-light">
-                        @Html.DisplayFor(model => model.FirmaSuscriptor)
-                    </div>
-                </dd>
-
-                <dt class="col-sm-3 text-muted">
-                    @Html.DisplayNameFor(model => model.UsuarioId)
-                </dt>
-                <dd class="col-sm-9 text-break">
-                    @Html.DisplayFor(model => model.UsuarioId)
-                </dd>
-
-            </dl>
-
-            <hr />
-
-            <div class="d-flex justify-content-between">
-
-                <a asp-action="Index" class="btn btn-secondary">
-                    Back to List
-                </a>
-
-                <div>
-                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
-                        Edit
-                    </a>
-
-                    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
-                        Delete
-                    </a>
+            <td rowspan="2" style="width:170px">
+                <div class="pagare-titulo">
+                    PAGARÉ
                 </div>
 
-            </div>
+                <div class="mt-3">
+                    No. @(Model.NumeroPagare ?? "1 de 1")
+                </div>
+            </td>
 
-        </div>
+            <td>
+                LUGAR DE EXPEDICIÓN
+            </td>
+
+            <td>DÍA</td>
+            <td>MES</td>
+            <td>AÑO</td>
+
+            <td>
+                BUENO POR
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                @Model.LugarExpedicion
+            </td>
+
+            <td>
+                @Model.FechaExpedicion.Day
+            </td>
+
+            <td>
+                @Model.FechaExpedicion.Month
+            </td>
+
+            <td>
+                @Model.FechaExpedicion.Year
+            </td>
+
+            <td class="pagare-monto">
+                $@Model.MontoTotal.ToString("N2")
+            </td>
+
+        </tr>
+
+    </table>
+
+    <br />
+
+    <p class="texto-pagare">
+
+        Debo(emos) y pagaré(mos) incondicionalmente sin pretexto este pagaré
+        en el lugar y fechas citadas donde elija el tenedor el día de su
+        vencimiento a la orden de
+
+        <span class="campo">
+            @Model.Beneficiario
+        </span>
+
+        en
+
+        <span class="campo">
+            @Model.LugarPagoPagare
+        </span>
+
+        el día
+
+        <span class="campo">
+            @Model.FechaVencimiento.Day
+        </span>
+
+        de
+
+        <span class="campo">
+            @Model.FechaVencimiento.Month
+        </span>
+
+        de
+
+        <span class="campo">
+            @Model.FechaVencimiento.Year
+        </span>
+
+    </p>
+
+    <h4>
+        La cantidad de:
+    </h4>
+
+    <div class="cantidad-box">
+
+        @Model.MontoLetra
+
     </div>
+
+    <br />
+
+    <p class="texto-legal">
+
+        VALOR RECIBIDO A MI (NUESTRA) ENTERA SATISFACCIÓN,
+        ESTE PAGARE FORMA PARTE DE UNA SERIE NUMERADA DEL
+
+        <strong>@Model.SerieDesde</strong>
+
+        AL
+
+        <strong>@Model.SerieHasta</strong>
+
+        Y TODOS ESTAN SUJETOS A LA CONDICIÓN DE QUE DE NO PAGARSE
+        CUALQUIERA DE ELLOS A SU VENCIMIENTO, SERÁN EXIGIBLES TODOS
+        LOS QUE LE SIGUEN EN NÚMERO.
+
+        ADEMÁS DE LOS YA VENCIDOS DE ACUERDO AL ART. 79 DE LA LEY
+        GENERAL DE TÍTULOS Y OPERACIONES DE CRÉDITO.
+
+        CAUSARÁN INTERESES MORATORIOS DEL
+
+        <strong>@Model.InteresMoratorio %</strong>
+
+        POR CADA MES O FRACCIÓN PAGADERO JUNTAMENTE CON EL PRINCIPAL.
+
+        DICHOS INTERESES SE CAUSARÁN SOBRE EL CAPITAL INSOLUTO
+        CONFORME A LO DISPUESTO POR EL ART. 152 INCISO I, II, III Y IV
+        DE LA LEY GENERAL DE TÍTULOS Y OPERACIONES DE CRÉDITO.
+
+    </p>
+
+    <table class="pagare-tabla mt-4">
+
+        <tr class="pagare-header">
+
+            <td style="width:55%">
+                NOMBRE Y DATOS DEL DEUDOR
+            </td>
+
+            <td style="width:20%">
+                AVAL
+            </td>
+
+            <td style="width:25%">
+                DEUDOR
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+
+                <br />
+
+                <strong>NOMBRE:</strong>
+
+                @Model.NombreSuscriptor
+
+                <br /><br />
+
+                <strong>DOMICILIO:</strong>
+
+                @Model.DomicilioDeudor
+
+                <br /><br />
+
+                <strong>POBLACIÓN:</strong>
+
+                @Model.PoblacionDeudor
+
+                <br /><br />
+
+            </td>
+
+            <td>
+
+                <div class="firma-box">
+
+                    @if (!string.IsNullOrEmpty(Model.FirmaBase64))
+                    {
+                    <img src="@Model.FirmaBase64"
+                         style="max-width:100%; max-height:100px;" />
+                    }
+
+                    <div class="firma-label">
+                        FIRMA(S)
+                    </div>
+
+                </div>
+
+            </td>
+
+            <td>
+
+                <div class="firma-box">
+
+                    @if (!string.IsNullOrEmpty(Model.FirmaBase64))
+                    {
+                    <img src="@Model.FirmaBase64"
+                         style="max-width:100%; max-height:100px;" />
+                    }
+
+                    <div class="firma-label">
+                        FIRMA(S)
+                    </div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+<div class="text-center mt-4 no-print">
+
+    <button type="button"
+            onclick="window.print()"
+            class="btn btn-success">
+        Imprimir / Guardar como PDF
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Volver
+    </a>
+
 </div>

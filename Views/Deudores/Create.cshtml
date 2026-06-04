@@ -1,0 +1,99 @@
+@model SistemaLegalPagares.Models.Deudor
+
+@{
+    ViewData["Title"] = "Nuevo Deudor";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Nuevo Deudor</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NombreCompleto" class="form-label fw-bold"></label>
+                        <input asp-for="NombreCompleto" class="form-control" />
+                        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="RFC" class="form-label fw-bold"></label>
+                        <input asp-for="RFC" class="form-control" />
+                        <span asp-validation-for="RFC" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CURP" class="form-label fw-bold"></label>
+                        <input asp-for="CURP" class="form-control" />
+                        <span asp-validation-for="CURP" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="INE" class="form-label fw-bold"></label>
+                        <input asp-for="INE" class="form-control" />
+                        <span asp-validation-for="INE" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Telefono" class="form-label fw-bold"></label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Correo" class="form-label fw-bold"></label>
+                        <input asp-for="Correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Poblacion" class="form-label fw-bold"></label>
+                        <input asp-for="Poblacion" class="form-control" placeholder="Ej. Puebla, Puebla" />
+                        <span asp-validation-for="Poblacion" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Direccion" class="form-label fw-bold"></label>
+                        <textarea asp-for="Direccion" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Direccion" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Volver
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        Guardar Deudor
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

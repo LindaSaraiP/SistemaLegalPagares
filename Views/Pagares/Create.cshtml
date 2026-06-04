@@ -1,104 +1,404 @@
+
+
 @model SistemaLegalPagares.Models.Pagare
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nuevo Pagaré";
+    var fechaMinima = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
+<style>
+    .pagare-form {
+        background: #d8f0c8;
+        border: 3px solid #6b4f2a;
+        padding: 20px;
+        font-family: Arial;
+    }
+
+    .titulo {
+        text-align: center;
+        font-weight: bold;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .linea-input {
+        border: none;
+        border-bottom: 1px solid black;
+        background: transparent;
+        width: 100%;
+    }
+
+        .linea-input:focus {
+            outline: none;
+        }
+
+    .texto-pagare {
+        text-align: justify;
+        line-height: 2;
+        margin-top: 20px;
+    }
+
+    .firma-canvas {
+        border: 2px solid #000;
+        background: white;
+        width: 100%;
+        max-width: 500px;
+        height: 180px;
+        touch-action: none;
+        cursor: crosshair;
+    }
+</style>
+@if (TempData["Success"] != null)
+{
+<div class="alert alert-success">
+    @TempData["Success"]
+</div>
+}
+
+@if (TempData["Error"] != null)
+{
+<div class="alert alert-danger">
+    @TempData["Error"]
+</div>
+}
 <div class="container mt-4">
 
-    <div class="row mb-3">
-        <div class="col">
-            <h2 class="fw-bold"> Crear Pagaré</h2>
-            <p class="text-muted">Complete los datos del documento legal</p>
-        </div>
-    </div>
+    <form asp-action="Create" method="post" id="formPagare">
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <form asp-action="Create">
+        <input type="hidden" asp-for="ExpedienteId" />
+        <input type="hidden" asp-for="FechaExpedicion" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" />
+        <input type="hidden" asp-for="LugarExpedicion" value="Puebla, Puebla" />
+        <input type="hidden" asp-for="FirmaBase64" id="FirmaBase64" />
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Beneficiario" id="Beneficiario" />
+        <input type="hidden" asp-for="NombreBeneficiario" id="NombreBeneficiario" />
 
-                <div class="row g-3">
+        <input type="hidden" asp-for="NumeroExpediente" value="EXP-TEMP" />
+        <input type="hidden" asp-for="LugarSuscripcion" value="Puebla, Puebla" />
+        <input type="hidden" asp-for="FechaSuscripcion" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" />
+        <input type="hidden" asp-for="FirmaSuscriptor" value="Firma digital capturada" />
 
-                    <div class="col-md-6">
-                        <label asp-for="NumeroExpediente" class="form-label"></label>
-                        <input asp-for="NumeroExpediente" class="form-control" />
-                        <span asp-validation-for="NumeroExpediente" class="text-danger"></span>
-                    </div>
+        <div class="pagare-form">
 
-                    <div class="col-md-6">
-                        <label asp-for="Monto" class="form-label"></label>
-                        <input asp-for="Monto" class="form-control" />
-                        <span asp-validation-for="Monto" class="text-danger"></span>
-                    </div>
+            <div class="titulo">PAGARÉ</div>
 
-                    <div class="col-md-6">
-                        <label asp-for="NombreBeneficiario" class="form-label"></label>
-                        <input asp-for="NombreBeneficiario" class="form-control" />
-                        <span asp-validation-for="NombreBeneficiario" class="text-danger"></span>
-                    </div>
+            <table class="table table-bordered text-center bg-white">
+                <tr>
+                    <th>PAGARÉ</th>
+                    <th>LUGAR DE EXPEDICIÓN</th>
+                    <th>DÍA</th>
+                    <th>MES</th>
+                    <th>AÑO</th>
+                    <th>BUENO POR</th>
+                </tr>
 
-                    <div class="col-md-6">
-                        <label asp-for="NombreSuscriptor" class="form-label"></label>
-                        <input asp-for="NombreSuscriptor" class="form-control" />
-                        <span asp-validation-for="NombreSuscriptor" class="text-danger"></span>
-                    </div>
+                <tr>
+                    <td>
+                        <input asp-for="NumeroPagare"
+                               class="linea-input"
+                               value="1 de 1" />
+                    </td>
 
-                    <div class="col-md-6">
-                        <label asp-for="LugarPago" class="form-label"></label>
-                        <input asp-for="LugarPago" class="form-control" />
-                        <span asp-validation-for="LugarPago" class="text-danger"></span>
-                    </div>
+                    <td>
+                        <strong>Puebla, Puebla</strong>
+                    </td>
 
-                    <div class="col-md-6">
-                        <label asp-for="FechaPago" class="form-label"></label>
-                        <input asp-for="FechaPago" type="datetime-local" class="form-control" />
-                        <span asp-validation-for="FechaPago" class="text-danger"></span>
-                    </div>
+                    <td>@DateTime.Now.Day</td>
+                    <td>@DateTime.Now.Month</td>
+                    <td>@DateTime.Now.Year</td>
 
-                    <div class="col-md-6">
-                        <label asp-for="LugarSuscripcion" class="form-label"></label>
-                        <input asp-for="LugarSuscripcion" class="form-control" />
-                        <span asp-validation-for="LugarSuscripcion" class="text-danger"></span>
-                    </div>
+                    <td>
+                        $
+                        <input asp-for="MontoTotal"
+                               type="number"
+                               step="0.01"
+                               min="0"
+                               class="linea-input"
+                               placeholder="0.00" />
+                    </td>
+                </tr>
+            </table>
 
-                    <div class="col-md-6">
-                        <label asp-for="FechaSuscripcion" class="form-label"></label>
-                        <input asp-for="FechaSuscripcion" type="datetime-local" class="form-control" />
-                        <span asp-validation-for="FechaSuscripcion" class="text-danger"></span>
-                    </div>
+            <div class="texto-pagare">
+                Debo(emos) y pagaré(mos) incondicionalmente sin pretexto este pagaré
+                en el lugar y fechas citadas donde elija el tenedor el día de su
+                vencimiento a la orden de
 
-                    <div class="col-12">
-                        <label asp-for="FirmaSuscriptor" class="form-label"></label>
-                        <input asp-for="FirmaSuscriptor" class="form-control" />
-                        <span asp-validation-for="FirmaSuscriptor" class="text-danger"></span>
-                    </div>
+                <select id="DeudorSelect"
+                        class="linea-input d-inline"
+                        style="width:320px;">
+                    <option value="">Seleccione un deudor</option>
 
-                    <!--  UsuarioId oculto (IMPORTANTE)
-                    <input type="hidden" asp-for="UsuarioId" />-->
+                    @foreach (var item in ViewBag.Deudores)
+                    {
+                    <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
 
+                en
+
+                <input asp-for="LugarPagoPagare"
+                       id="LugarPagoPagare"
+                       class="linea-input d-inline"
+                       style="width:250px;" />
+
+                el día
+
+                <input asp-for="FechaVencimiento"
+                       id="FechaVencimiento"
+                       type="date"
+                       min="@fechaMinima"
+                       class="linea-input d-inline"
+                       style="width:200px;" />
+
+                <span asp-validation-for="FechaVencimiento" class="text-danger"></span>
+            </div>
+
+            <input asp-for="NombreSuscriptor" id="NombreSuscriptor" type="hidden" />
+            <input asp-for="Acreedor" id="Acreedor" type="hidden" />
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-2 fw-bold">
+                    La cantidad de:
                 </div>
 
-                <hr class="my-4" />
-
-                <div class="d-flex justify-content-between">
-
-                    <a asp-action="Index" class="btn btn-secondary">
-                        Back to List
-                    </a>
-
-                    <input type="submit" value="Create" class="btn btn-primary px-4" />
-
+                <div class="col-md-10">
+                    <input asp-for="MontoLetra"
+                           class="linea-input"
+                           placeholder="CINCUENTA MIL PESOS 00/100 M.N." />
                 </div>
+            </div>
 
-            </form>
+            <br />
+
+            <div class="texto-pagare">
+                VALOR RECIBIDO A MI (NUESTRA) ENTERA SATISFACCIÓN, ESTE PAGARÉ
+                FORMA PARTE DE UNA SERIE NUMERADA DEL
+
+                <input asp-for="SerieDesde"
+                       class="linea-input d-inline"
+                       style="width:70px;" />
+
+                AL
+
+                <input asp-for="SerieHasta"
+                       class="linea-input d-inline"
+                       style="width:70px;" />
+
+                Y TODOS ESTÁN SUJETOS DE QUE NO PAGARSE CUALQUIERA DE ELLOS A SU
+                VENCIMIENTO, SERÁN EXIGIBLES TODOS LOS QUE LE SIGUEN EN NÚMERO,
+                ADEMÁS DE LOS YA VENCIDOS.
+
+                CAUSARÁN INTERESES MORATORIOS DEL
+
+                <input asp-for="InteresMoratorio"
+                       type="number"
+                       step="0.01"
+                       min="0"
+                       class="linea-input d-inline"
+                       style="width:80px;"
+                       placeholder="0.00" />
+
+                % POR CADA MES O FRACCIÓN.
+            </div>
+
+            <br />
+
+            <table class="table table-bordered bg-white">
+                <tr>
+                    <th width="45%">NOMBRE Y DATOS DEL DEUDOR</th>
+                    <th width="20%">AVAL</th>
+                    <th width="35%">DEUDOR</th>
+                </tr>
+
+                <tr>
+                    <td>
+                        Nombre
+
+                        <input id="NombreDeudorVisible"
+                               class="linea-input"
+                               readonly />
+
+                        <br /><br />
+
+                        Domicilio
+
+                        <input asp-for="DomicilioDeudor"
+                               id="DomicilioDeudor"
+                               class="linea-input"
+                               readonly />
+
+                        <br /><br />
+
+                        Población
+
+                        <input asp-for="PoblacionDeudor"
+                               id="PoblacionDeudor"
+                               class="linea-input"
+                               readonly />
+                    </td>
+
+                    <td class="text-center align-middle">
+                        ___________________
+                        <br />
+                        FIRMA AVAL
+                    </td>
+
+                    <td class="text-center align-middle">
+
+                        <canvas id="firmaCanvas"
+                                width="500"
+                                height="180"
+                                class="firma-canvas">
+                        </canvas>
+
+                        <br />
+
+                        FIRMA DEUDOR
+
+                        <div class="mt-2">
+                            <button type="button"
+                                    class="btn btn-warning btn-sm"
+                                    id="btnLimpiarFirma">
+                                Limpiar firma
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg">
+                    Guardar Pagaré
+                </button>
+
+                <a asp-controller="Expedientes"
+                   asp-action="Details"
+                   asp-route-id="@Model.ExpedienteId"
+                   class="btn btn-secondary btn-lg">
+                    Cancelar
+                </a>
+            </div>
 
         </div>
-    </div>
+
+    </form>
+
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const deudores = @Html.Raw(ViewBag.DeudoresJson);
+
+        const deudorSelect = document.getElementById("DeudorSelect");
+
+        const nombreSuscriptor = document.getElementById("NombreSuscriptor");
+        const acreedor = document.getElementById("Acreedor");
+        const beneficiario = document.getElementById("Beneficiario");
+        const nombreBeneficiario = document.getElementById("NombreBeneficiario");
+
+        const nombreDeudorVisible = document.getElementById("NombreDeudorVisible");
+        const domicilioDeudor = document.getElementById("DomicilioDeudor");
+        const poblacionDeudor = document.getElementById("PoblacionDeudor");
+
+        deudorSelect.addEventListener("change", function () {
+            const id = parseInt(this.value);
+            const deudor = deudores.find(d => d.id === id);
+
+            if (!deudor) {
+                nombreSuscriptor.value = "";
+                acreedor.value = "";
+                beneficiario.value = "";
+                nombreBeneficiario.value = "";
+                nombreDeudorVisible.value = "";
+                domicilioDeudor.value = "";
+                poblacionDeudor.value = "";
+                return;
+            }
+
+            nombreSuscriptor.value = deudor.nombre;
+            acreedor.value = deudor.nombre;
+            beneficiario.value = deudor.nombre;
+            nombreBeneficiario.value = deudor.nombre;
+
+            nombreDeudorVisible.value = deudor.nombre;
+            domicilioDeudor.value = deudor.domicilio ?? "";
+            poblacionDeudor.value = deudor.poblacion ?? "";
+        });
+
+        const canvas = document.getElementById("firmaCanvas");
+        const ctx = canvas.getContext("2d");
+        const firmaBase64 = document.getElementById("FirmaBase64");
+
+        let dibujando = false;
+
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "black";
+
+        function obtenerPosicion(evento) {
+            const rect = canvas.getBoundingClientRect();
+            const cliente = evento.touches ? evento.touches[0] : evento;
+
+            return {
+                x: (cliente.clientX - rect.left) * (canvas.width / rect.width),
+                y: (cliente.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function iniciarDibujo(evento) {
+            dibujando = true;
+            const pos = obtenerPosicion(evento);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            evento.preventDefault();
+        }
+
+        function dibujar(evento) {
+            if (!dibujando) return;
+
+            const pos = obtenerPosicion(evento);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+
+            firmaBase64.value = canvas.toDataURL("image/png");
+
+            evento.preventDefault();
+        }
+
+        function terminarDibujo() {
+            if (!dibujando) return;
+            dibujando = false;
+            firmaBase64.value = canvas.toDataURL("image/png");
+        }
+
+        canvas.addEventListener("mousedown", iniciarDibujo);
+        canvas.addEventListener("mousemove", dibujar);
+        canvas.addEventListener("mouseup", terminarDibujo);
+        canvas.addEventListener("mouseleave", terminarDibujo);
+
+        canvas.addEventListener("touchstart", iniciarDibujo, { passive: false });
+        canvas.addEventListener("touchmove", dibujar, { passive: false });
+        canvas.addEventListener("touchend", terminarDibujo);
+
+        document.getElementById("btnLimpiarFirma").addEventListener("click", function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            firmaBase64.value = "";
+        });
+
+        document.getElementById("formPagare").addEventListener("submit", function () {
+            if (firmaBase64.value === "") {
+                firmaBase64.value = canvas.toDataURL("image/png");
+            }
+        });
+    </script>
 }

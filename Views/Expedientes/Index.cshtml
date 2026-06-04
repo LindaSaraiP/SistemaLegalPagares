@@ -1,22 +1,21 @@
 ﻿@model IEnumerable<SistemaLegalPagares.Models.Expediente>
 
     @{
-ViewData["Title"] = "Expedientes";
+    ViewData["Title"] = "Expedientes";
     }
 
     <div class="container mt-4">
 
-        
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold">Expedientes</h2>
                 <p class="text-muted mb-0">
-                    Administración de expedientes legales
+                    Administración de carpetas legales y pagarés asociados
                 </p>
             </div>
 
             <a asp-action="Create" class="btn btn-success">
-                Nuevo Expediente
+                + Nuevo Expediente
             </a>
         </div>
 
@@ -34,83 +33,69 @@ ViewData["Title"] = "Expedientes";
 
                         <thead class="table-light">
                             <tr>
-                                <th>Expediente</th>
+                                <th>Número de Expediente</th>
                                 <th>Cliente</th>
-                                <th>CURP</th>
-                                <th>RFC</th>
-                                <th>Teléfono</th>
-                                <th>Fecha</th>
-                                <th width="260"></th>
+                                <th>Fecha de Creación</th>
+                                <th class="text-center" width="240">Acciones</th>
                             </tr>
                         </thead>
 
                         <tbody>
 
                             @if (!Model.Any())
-                    {
+                        {
                             <tr>
-                                <td colspan="7" class="text-center p-4">
-                                    No existen expedientes registrados.
+                                <td colspan="4" class="text-center p-4 text-muted">
+                                    No hay expedientes registrados.
                                 </td>
                             </tr>
-                    }
-
-                            @foreach (var item in Model)
-                    {
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
                             <tr>
-
                                 <td>
-                                    <strong>@item.NumeroExpediente</strong>
+                                    <span class="fw-bold">
+                                        @item.NumeroExpediente
+                                    </span>
                                 </td>
 
                                 <td>
-                                    @item.NombreCliente
-                                </td>
-
-                                <td>
-                                    @item.CURP
-                                </td>
-
-                                <td>
-                                    @item.RFC
-                                </td>
-
-                                <td>
-                                    @item.Telefono
+                                    @if (item.Cliente != null)
+                                        {
+                                    <span>@item.Cliente.NombreCompleto</span>
+                                        }
+                                        else
+                                        {
+                                    <span class="text-muted">Sin cliente asociado</span>
+                                        }
                                 </td>
 
                                 <td>
                                     @item.FechaCreacion.ToString("dd/MM/yyyy")
                                 </td>
 
-                                <td>
-
+                                <td class="text-center">
                                     <div class="btn-group">
 
                                         <a asp-action="Details"
                                            asp-route-id="@item.Id"
                                            class="btn btn-info btn-sm text-white">
-                                             Ver
+                                            Ver detalles
                                         </a>
 
                                         <a asp-action="Edit"
                                            asp-route-id="@item.Id"
                                            class="btn btn-warning btn-sm">
-                                             Editar
-                                        </a>
-
-                                        <a asp-action="Delete"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-danger btn-sm">
-                                             Eliminar
+                                            Editar
                                         </a>
 
                                     </div>
-
                                 </td>
-
                             </tr>
-                    }
+                            }
+                        }
 
                         </tbody>
 
@@ -121,6 +106,5 @@ ViewData["Title"] = "Expedientes";
             </div>
 
         </div>
-        
 
     </div>

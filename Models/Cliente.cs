@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SistemaLegalPagares.Models
 {
-    public class Deudor
+    public class Cliente
     {
         public int Id { get; set; }
 
@@ -22,10 +22,8 @@ namespace SistemaLegalPagares.Models
 
         public string? Direccion { get; set; }
 
-        public string? Poblacion { get; set; }
-
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
-        public ICollection<PagareDeudor>? PagareDeudores { get; set; }
+        public ICollection<Expediente>? Expedientes { get; set; }
     }
 }

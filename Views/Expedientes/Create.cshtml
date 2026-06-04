@@ -4,66 +4,49 @@
     ViewData["Title"] = "Nuevo Expediente";
 }
 
-<div class="container mt-5">
+<div class="container mt-4">
 
     <div class="card shadow border-0">
 
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">
-                Nuevo Expediente
-            </h3>
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">Nuevo Expediente</h3>
         </div>
 
         <div class="card-body">
 
-            <form asp-action="Create">
+            <form asp-action="Create" method="post">
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3">
-                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <div class="row">
 
                     <div class="col-md-6 mb-3">
-                        <label asp-for="NumeroExpediente" class="form-label"></label>
-                        <input asp-for="NumeroExpediente" class="form-control" />
+                        <label asp-for="NumeroExpediente" class="form-label fw-bold"></label>
+                        <input asp-for="NumeroExpediente"
+                               class="form-control"
+                               placeholder="Ej. EXP-2026-001" />
+                        <span asp-validation-for="NumeroExpediente" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label asp-for="NombreCliente" class="form-label"></label>
-                        <input asp-for="NombreCliente" class="form-control" />
-                    </div>
+                        <label class="form-label fw-bold">Cliente</label>
 
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="CURP" class="form-label"></label>
-                        <input asp-for="CURP" class="form-control" />
-                    </div>
+                        <select asp-for="ClienteId"
+                                class="form-select"
+                                asp-items="ViewBag.Clientes">
+                            <option value="">Seleccione un cliente</option>
+                        </select>
 
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="RFC" class="form-label"></label>
-                        <input asp-for="RFC" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="INE" class="form-label"></label>
-                        <input asp-for="INE" class="form-control" />
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Telefono" class="form-label"></label>
-                        <input asp-for="Telefono" class="form-control" />
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Direccion" class="form-label"></label>
-                        <input asp-for="Direccion" class="form-control" />
+                        <span asp-validation-for="ClienteId" class="text-danger"></span>
                     </div>
 
                     <div class="col-12 mb-3">
-                        <label asp-for="Observaciones" class="form-label"></label>
+                        <label asp-for="Observaciones" class="form-label fw-bold"></label>
                         <textarea asp-for="Observaciones"
                                   class="form-control"
-                                  rows="4"></textarea>
+                                  rows="4"
+                                  placeholder="Observaciones generales del expediente"></textarea>
+                        <span asp-validation-for="Observaciones" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -72,14 +55,12 @@
 
                 <div class="d-flex justify-content-between">
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
-                        ← Regresar
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Volver
                     </a>
 
-                    <button type="submit"
-                            class="btn btn-success">
-                         Guardar Expediente
+                    <button type="submit" class="btn btn-success">
+                        Guardar Expediente
                     </button>
 
                 </div>

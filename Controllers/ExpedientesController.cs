@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaLegalPagares.Data;
 using SistemaLegalPagares.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SistemaLegalPagares.Controllers
 {
@@ -22,7 +23,11 @@ namespace SistemaLegalPagares.Controllers
         // GET: Expedientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Expedientes.ToListAsync());
+            var expedientes = await _context.Expedientes
+                .Include(e => e.Cliente)
+                .ToListAsync();
+
+            return View(expedientes);
         }
 
         // GET: Expedientes/Details/5
@@ -34,7 +39,10 @@ namespace SistemaLegalPagares.Controllers
             }
 
             var expediente = await _context.Expedientes
+                .Include(e => e.Cliente)
+                .Include(e => e.Pagares)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (expediente == null)
             {
                 return NotFound();
@@ -46,6 +54,12 @@ namespace SistemaLegalPagares.Controllers
         // GET: Expedientes/Create
         public IActionResult Create()
         {
+            ViewBag.Clientes = new SelectList(
+                _context.Clientes.ToList(),
+                "Id",
+                "NombreCompleto"
+            );
+
             return View();
         }
 
@@ -54,14 +68,25 @@ namespace SistemaLegalPagares.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroExpediente,NombreCliente,CURP,INE,RFC,Telefono,Direccion,Observaciones,FechaCreacion")] Expediente expediente)
+        public async Task<IActionResult> Create(Expediente expediente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(expediente);
+                expediente.FechaCreacion = DateTime.Now;
+
+                _context.Expedientes.Add(expediente);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Clientes = new SelectList(
+                _context.Clientes.ToList(),
+                "Id",
+                "NombreCompleto",
+                expediente.ClienteId
+            );
+
             return View(expediente);
         }
 
@@ -74,10 +99,19 @@ namespace SistemaLegalPagares.Controllers
             }
 
             var expediente = await _context.Expedientes.FindAsync(id);
+
             if (expediente == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Clientes = new SelectList(
+                _context.Clientes.ToList(),
+                "Id",
+                "NombreCompleto",
+                expediente.ClienteId
+            );
+
             return View(expediente);
         }
 
@@ -86,7 +120,7 @@ namespace SistemaLegalPagares.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroExpediente,NombreCliente,CURP,INE,RFC,Telefono,Direccion,Observaciones,FechaCreacion")] Expediente expediente)
+        public async Task<IActionResult> Edit(int id, Expediente expediente)
         {
             if (id != expediente.Id)
             {
@@ -97,8 +131,20 @@ namespace SistemaLegalPagares.Controllers
             {
                 try
                 {
-                    _context.Update(expediente);
+                    var expedienteDb = await _context.Expedientes.FindAsync(id);
+
+                    if (expedienteDb == null)
+                    {
+                        return NotFound();
+                    }
+
+                    expedienteDb.NumeroExpediente = expediente.NumeroExpediente;
+                    expedienteDb.ClienteId = expediente.ClienteId;
+                    expedienteDb.Observaciones = expediente.Observaciones;
+
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -106,13 +152,18 @@ namespace SistemaLegalPagares.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Clientes = new SelectList(
+                _context.Clientes.ToList(),
+                "Id",
+                "NombreCompleto",
+                expediente.ClienteId
+            );
+
             return View(expediente);
         }
 

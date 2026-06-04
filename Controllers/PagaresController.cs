@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using SistemaLegalPagares.Services.Pdf;
 using QuestPDF.Fluent;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SistemaLegalPagares.Controllers
 {
@@ -61,11 +62,22 @@ namespace SistemaLegalPagares.Controllers
         // =========================
         // CREATE GET
         // =========================
-        public IActionResult Create()
+        public IActionResult Create(int? expedienteId)
         {
-            return View();
-        }
+            CargarDeudoresViewBag();
 
+            var pagare = new Pagare
+            {
+                ExpedienteId = expedienteId ?? 0,
+                LugarExpedicion = "Puebla, Puebla",
+                FechaExpedicion = DateTime.Now,
+                NumeroPagare = "1 de 1",
+                SerieDesde = 1,
+                SerieHasta = 1
+            };
+
+            return View(pagare);
+        }
         // =========================
         // CREATE POST
         // =========================
@@ -73,33 +85,56 @@ namespace SistemaLegalPagares.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pagare pagare)
         {
-            //  ASIGNAR USUARIO SIEMPRE DESDE EL SERVER
+            // Datos automáticos
             pagare.UsuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            pagare.FechaExpedicion = DateTime.Now;
+            pagare.LugarExpedicion = "Puebla, Puebla";
 
-            // DEBUG: ver errores reales si falla
+            // Compatibilidad con campos legacy
+            pagare.Beneficiario = pagare.NombreSuscriptor;
+            pagare.NombreBeneficiario = pagare.NombreSuscriptor;
+            pagare.Acreedor = pagare.NombreSuscriptor ?? "Sin deudor";
+
+            pagare.Monto = pagare.MontoTotal;
+            pagare.FechaPago = pagare.FechaVencimiento;
+            pagare.LugarPago = pagare.LugarPagoPagare;
+            pagare.LugarSuscripcion = pagare.LugarExpedicion;
+            pagare.FechaSuscripcion = pagare.FechaExpedicion;
+            pagare.FirmaSuscriptor = "Firma digital capturada";
+
+            if (pagare.FechaVencimiento.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("FechaVencimiento", "La fecha de vencimiento no puede ser anterior al día actual.");
+            }
+
+            // Si no viene expediente, marcamos error claro
+            if (pagare.ExpedienteId <= 0)
+            {
+                ModelState.AddModelError("ExpedienteId", "No se recibió el expediente asociado al pagaré.");
+            }
+
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values
+                var errores = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
 
-                return Content("ModelState inválido: " + string.Join(" | ", errors));
+                TempData["Error"] = "No se pudo guardar el pagaré: " + string.Join(" | ", errores);
+
+                CargarDeudoresViewBag();
+
+                return View(pagare);
             }
 
-            try
-            {
-                _context.Pagares.Add(pagare);
-                await _context.SaveChangesAsync();
+            _context.Pagares.Add(pagare);
+            await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                // VER ERROR REAL DE BD
-                return Content("Error al guardar: " + ex.Message);
-            }
+            TempData["Success"] = "El pagaré se guardó correctamente.";
+
+            return RedirectToAction(nameof(Details), new { id = pagare.Id });
         }
+
         // =========================
         // EDIT GET
         // =========================
@@ -210,6 +245,30 @@ namespace SistemaLegalPagares.Controllers
             var pdf = document.GeneratePdf();
 
             return File(pdf, "application/pdf", $"Pagare_{pagare.NumeroExpediente}.pdf");
+        }
+
+
+        //post respaldo
+
+        private void CargarDeudoresViewBag()
+        {
+            var deudores = _context.Deudores.ToList();
+
+            ViewBag.Deudores = deudores.Select(d => new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.NombreCompleto
+            }).ToList();
+
+            ViewBag.DeudoresJson = System.Text.Json.JsonSerializer.Serialize(
+                deudores.Select(d => new
+                {
+                    id = d.Id,
+                    nombre = d.NombreCompleto,
+                    domicilio = d.Direccion,
+                    poblacion = d.Poblacion
+                })
+            );
         }
 
     }

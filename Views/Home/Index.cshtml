@@ -4,56 +4,157 @@
 
 <div class="container mt-4">
 
+    <!-- ENCABEZADO -->
     <div class="row mb-4">
         <div class="col">
-            <h2 class="fw-bold">Sistema Legal de Pagarés</h2>
-            <p class="text-muted">Gestión de documentos legales de forma segura</p>
+            <div class="p-4 rounded shadow-sm bg-white border-start border-5 border-success">
+                <h2 class="fw-bold mb-2">
+                    Sistema Legal de Pagarés
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Gestión de expedientes, pagarés y documentos legales de forma segura.
+                </p>
+            </div>
         </div>
     </div>
 
-    <!-- Cards resumen -->
-    <div class="row g-3">
+    <!-- TARJETAS PRINCIPALES -->
+    <div class="row g-4">
 
+        <!-- EXPEDIENTES -->
         <div class="col-md-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Mis Pagarés</h5>
-                    <p class="card-text text-muted">Administra tus documentos creados.</p>
-                    <a class="btn btn-primary" href="/Pagares">Ver Pagarés</a>
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="mb-3">
+                        <span style="font-size:45px;">📁</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Expedientes
+                    </h4>
+
+                    <p class="text-muted">
+                        Consulta, crea y administra los expedientes legales de tus clientes.
+                    </p>
+
+                    <div class="d-grid gap-2">
+
+                        <a asp-controller="Expedientes"
+                           asp-action="Index"
+                           class="btn btn-success">
+                            Ver Expedientes
+                        </a>
+
+                        <a asp-controller="Expedientes"
+                           asp-action="Create"
+                           class="btn btn-outline-success">
+                            Crear Expediente
+                        </a>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
 
+        <!-- PAGARÉS -->
         <div class="col-md-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Crear Pagaré</h5>
-                    <p class="card-text text-muted">Registra un nuevo pagaré legal.</p>
-                    <a class="btn btn-success" href="/Pagares/Create">Crear</a>
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="mb-3">
+                        <span style="font-size:45px;">📄</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Pagarés
+                    </h4>
+
+                    <p class="text-muted">
+                        Visualiza los pagarés registrados y accede a su vista previa o impresión.
+                    </p>
+
+                    <div class="d-grid gap-2">
+
+                        <a asp-controller="Pagares"
+                           asp-action="Index"
+                           class="btn btn-primary">
+                            Ver Pagarés
+                        </a>
+
+                        <a asp-controller="Expedientes"
+                           asp-action="Index"
+                           class="btn btn-outline-primary">
+                            Crear desde Expediente
+                        </a>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
 
+        <!-- PANEL ADMIN SOLO ADMIN -->
+        @if (User.IsInRole("Admin"))
+        {
         <div class="col-md-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Perfil</h5>
-                    <p class="card-text text-muted">Revisa tu información de usuario.</p>
-                    <a class="btn btn-secondary" href="/Identity/Account/Manage">Ver perfil</a>
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="mb-3">
+                        <span style="font-size:45px;">🛡️</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Panel de Administración
+                    </h4>
+
+                    <p class="text-muted">
+                        Autoriza abogados, revisa usuarios pendientes y administra el acceso al sistema.
+                    </p>
+
+                    <div class="d-grid gap-2">
+
+                        <a asp-controller="Admin"
+                           asp-action="UsuariosPendientes"
+                           class="btn btn-warning fw-bold">
+                            Ir al Panel Admin
+                        </a>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
+        }
 
+    </div>
+
+    <!-- NOTA DE FLUJO -->
+    <div class="row mt-5">
+        <div class="col">
+
+            <div class="alert alert-info shadow-sm border-0">
+
+                <h5 class="fw-bold mb-2">
+                    Flujo recomendado
+                </h5>
+
+                <p class="mb-0">
+                    Primero registra un cliente y un deudor, después crea un expediente y desde el detalle del expediente genera los pagarés correspondientes.
+                </p>
+
+            </div>
+
+        </div>
     </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-

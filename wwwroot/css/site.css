@@ -1,41 +1,444 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     margin-bottom: 60px;
     background: #f5f7fb;
-    padding-top: 75px; 
+    padding-top: 75px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
 }
+
 .card {
     border-radius: 12px;
+    max-width: 1000px;
+    margin: auto;
 }
 
 .table {
     border-radius: 12px;
     overflow: hidden;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* ESTILO PAGARÉ */
+
+.pagare {
+    background: white;
+    border: 2px solid #222;
+    padding: 40px;
+}
+
+.pagare-titulo {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.pagare-subtitulo {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.pagare-monto {
+    font-size: 30px;
+    font-weight: bold;
+    color: #198754;
+}
+
+.pagare-firma {
+    margin-top: 100px;
+    width: 300px;
+    border-top: 1px solid black;
+    text-align: center;
+    padding-top: 8px;
+}
+
+
+.card.border-success {
+    border-width: 3px !important;
+}
+
+.card-header.bg-success {
+    background: #2f6f3e !important;
+}
+
+textarea[readonly] {
+    background: #f8f9fa;
+}
+
+.form-control-lg {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.pagare-formitec {
+    background: #eef5ea;
+    border: 3px solid #5b4636;
+    border-radius: 8px;
+    padding: 15px;
+    max-width: 1200px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.pagare-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .pagare-tabla th,
+    .pagare-tabla td {
+        border: 2px solid #7aa37a;
+        padding: 5px;
+    }
+
+.pagare-header {
+    background: #dce9d7;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pagare-titulo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.pagare-monto {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.campo-linea {
+    border-bottom: 1px solid black;
+    min-height: 24px;
+    display: inline-block;
+    width: 100%;
+}
+
+.firma-box {
+    height: 140px;
+    border: 2px solid #7aa37a;
+    position: relative;
+}
+
+.firma-label {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+
+.pagare-formitec {
+    background: #eef5ea;
+    border: 3px solid #5c4635;
+    padding: 15px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.pagare-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .pagare-tabla td {
+        border: 2px solid #83a886;
+        padding: 6px;
+    }
+
+.pagare-header {
+    background: #ddebd8;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pagare-titulo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.pagare-monto {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.texto-pagare {
+    text-align: justify;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.texto-legal {
+    text-align: justify;
+    font-size: 13px;
+}
+
+.campo {
+    border-bottom: 1px solid black;
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+.cantidad-box {
+    border: 2px solid #83a886;
+    min-height: 50px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.firma-box {
+    position: relative;
+    height: 160px;
+}
+
+.firma-label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid black;
+}
+
+
+.pagare-form {
+    background: #d9e9c2;
+    border: 3px solid #6b4f2a;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+    .pagare-form table {
+        background: white;
+    }
+
+    .pagare-form input {
+        border-radius: 0;
+    }
+
+
+
+
+.pagare-formitec {
+    background: #d7e8c4;
+    border: 3px solid #6b4f1d;
+    padding: 25px;
+    max-width: 1100px;
+    margin: auto;
+    font-family: Arial;
+    color: #000;
+}
+
+    .pagare-formitec table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .pagare-formitec td,
+    .pagare-formitec th {
+        border: 1px solid #000;
+        padding: 6px;
+    }
+
+.linea-pagare {
+    border: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+    width: 250px;
+}
+
+    .linea-pagare:focus {
+        outline: none;
+    }
+
+.linea-grande {
+    width: 100%;
+}
+
+.campo-dinero {
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+}
+
+.titulo-pagare {
+    text-align: center;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.texto-legal {
+    text-align: justify;
+    line-height: 1.7;
+}
+
+
+/* ============================= */
+/* IMPRESIÓN DEL PAGARÉ FORMITEC */
+/* ============================= */
+
+@media print {
+
+    /* Ocultar cosas que no deben imprimirse */
+    nav,
+    footer,
+    .btn,
+    .navbar,
+    .no-print {
+        display: none !important;
+    }
+
+    html,
+    body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Tamaño carta */
+    @page {
+        size: letter;
+        margin: 10mm;
+    }
+
+    /* Contenedor general */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Formato del pagaré */
+    .pagare-formitec,
+    .pagare-form {
+        background: #d8f0c8 !important;
+        border: 3px solid #6b4f2a !important;
+        padding: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        font-family: Arial, sans-serif !important;
+        font-size: 10px !important;
+        /* Esto ayuda a que ocupe aprox. media hoja */
+        transform: scale(0.85);
+        transform-origin: top center;
+    }
+
+    .titulo {
+        font-size: 20px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .pagare-formitec table,
+    .pagare-form table,
+    .table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        background: white !important;
+        margin-bottom: 6px !important;
+    }
+
+        .pagare-formitec th,
+        .pagare-formitec td,
+        .pagare-form th,
+        .pagare-form td,
+        .table th,
+        .table td {
+            border: 1px solid #000 !important;
+            padding: 3px !important;
+            font-size: 10px !important;
+        }
+
+    .texto-pagare,
+    .texto-legal {
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+        text-align: justify !important;
+        margin-top: 6px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .linea-input {
+        border: none !important;
+        border-bottom: 1px solid #000 !important;
+        background: transparent !important;
+        font-size: 10px !important;
+        padding: 0 !important;
+    }
+
+    input,
+    select,
+    textarea {
+        border: none !important;
+        border-bottom: 1px solid #000 !important;
+        background: transparent !important;
+        font-size: 10px !important;
+        color: black !important;
+        box-shadow: none !important;
+        appearance: none !important;
+    }
+
+    .firma-canvas {
+        width: 180px !important;
+        height: 70px !important;
+        border: 1px solid #000 !important;
+        background: white !important;
+    }
+
+    .card,
+    .card-body {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* Evita que se corte feo */
+    .pagare-formitec,
+    .pagare-form {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
 }

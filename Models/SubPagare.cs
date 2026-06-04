@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace SistemaLegalPagares.Models
 {
     public class SubPagare
