@@ -71,21 +71,35 @@ namespace SistemaLegalPagares.Controllers
         // =========================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NumeroExpediente,Monto,NombreBeneficiario,NombreSuscriptor,LugarPago,FechaPago,LugarSuscripcion,FechaSuscripcion,FirmaSuscriptor")] Pagare pagare)
+        public async Task<IActionResult> Create(Pagare pagare)
         {
-            if (ModelState.IsValid)
-            {
-                pagare.UsuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //  ASIGNAR USUARIO SIEMPRE DESDE EL SERVER
+            pagare.UsuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                _context.Add(pagare);
+            // DEBUG: ver errores reales si falla
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Content("ModelState inválido: " + string.Join(" | ", errors));
+            }
+
+            try
+            {
+                _context.Pagares.Add(pagare);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(pagare);
+            catch (Exception ex)
+            {
+                // VER ERROR REAL DE BD
+                return Content("Error al guardar: " + ex.Message);
+            }
         }
-
         // =========================
         // EDIT GET
         // =========================

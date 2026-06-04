@@ -6,52 +6,56 @@ namespace SistemaLegalPagares.Models
     {
         public int Id { get; set; }
 
-        // Número de expediente interno
-        [Required]
-        [Display(Name = "Número de Expediente")]
-        public string NumeroExpediente { get; set; }
+        // NUEVO MODELO
+        public int ExpedienteId { get; set; }
+        public Expediente? Expediente { get; set; }
 
-        // II - Promesa de pago
-        [Required]
-        [Display(Name = "Monto a Pagar")]
-        public decimal Monto { get; set; }
+        public string? NumeroPagare { get; set; }
 
-        // III - Beneficiario
         [Required]
-        [Display(Name = "Nombre del Beneficiario")]
-        public string NombreBeneficiario { get; set; }
+        public string LugarExpedicion { get; set; } = "Cuernavaca, Morelos";
 
-        // Suscriptor / deudor
         [Required]
-        [Display(Name = "Nombre del Suscriptor")]
-        public string NombreSuscriptor { get; set; }
+        public DateTime FechaExpedicion { get; set; } = DateTime.Now;
 
-        // IV - Lugar de pago
         [Required]
-        [Display(Name = "Lugar de Pago")]
-        public string LugarPago { get; set; }
+        public string Acreedor { get; set; } = string.Empty;
 
-        // IV - Fecha de pago
         [Required]
-        [Display(Name = "Fecha de Pago")]
-        public DateTime FechaPago { get; set; }
+        public decimal MontoTotal { get; set; }
 
-        // V - Lugar de firma
+        public string? MontoLetra { get; set; }
+
         [Required]
-        [Display(Name = "Lugar de Suscripción")]
-        public string LugarSuscripcion { get; set; }
+        public DateTime FechaVencimiento { get; set; }
 
-        // V - Fecha de firma
-        [Required]
-        [Display(Name = "Fecha de Suscripción")]
-        public DateTime FechaSuscripcion { get; set; }
+        public string? TextoLegal { get; set; }
 
-        // VI - Firma
-        [Required]
-        [Display(Name = "Firma del Suscriptor")]
-        public string FirmaSuscriptor { get; set; }
+        public string? FirmaBase64 { get; set; }
 
-        // Usuario creador
-        public string UsuarioId { get; set; }
+        public string? UsuarioId { get; set; }
+
+        public ICollection<SubPagare>? SubPagares { get; set; }
+
+        public ICollection<PagareDeudor>? PagareDeudores { get; set; }
+
+        // CAMPOS LEGACY
+        public string? NumeroExpediente { get; set; }
+
+        public decimal? Monto { get; set; }
+
+        public string? NombreBeneficiario { get; set; }
+
+        public string? NombreSuscriptor { get; set; }
+
+        public string? LugarPago { get; set; }
+
+        public DateTime? FechaPago { get; set; }
+
+        public string? LugarSuscripcion { get; set; }
+
+        public DateTime? FechaSuscripcion { get; set; }
+
+        public string? FirmaSuscriptor { get; set; }
     }
 }

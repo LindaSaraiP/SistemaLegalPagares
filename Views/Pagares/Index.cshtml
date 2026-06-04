@@ -36,7 +36,7 @@
                                 <td>$@item.Monto</td>
                                 <td>@item.NombreBeneficiario</td>
                                 <td>@item.NombreSuscriptor</td>
-                                <td>@item.FechaPago.ToString("yyyy-MM-dd")</td>
+                                <td>@item.FechaPago?.ToString("yyyy-MM-dd")</td>
 
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="/Pagares/Details/@item.Id">Ver</a>

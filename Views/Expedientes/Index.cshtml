@@ -1,0 +1,126 @@
+﻿@model IEnumerable<SistemaLegalPagares.Models.Expediente>
+
+    @{
+ViewData["Title"] = "Expedientes";
+    }
+
+    <div class="container mt-4">
+
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Expedientes</h2>
+                <p class="text-muted mb-0">
+                    Administración de expedientes legales
+                </p>
+            </div>
+
+            <a asp-action="Create" class="btn btn-success">
+                Nuevo Expediente
+            </a>
+        </div>
+
+        <div class="card shadow border-0">
+
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Listado de Expedientes</h5>
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Expediente</th>
+                                <th>Cliente</th>
+                                <th>CURP</th>
+                                <th>RFC</th>
+                                <th>Teléfono</th>
+                                <th>Fecha</th>
+                                <th width="260"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @if (!Model.Any())
+                    {
+                            <tr>
+                                <td colspan="7" class="text-center p-4">
+                                    No existen expedientes registrados.
+                                </td>
+                            </tr>
+                    }
+
+                            @foreach (var item in Model)
+                    {
+                            <tr>
+
+                                <td>
+                                    <strong>@item.NumeroExpediente</strong>
+                                </td>
+
+                                <td>
+                                    @item.NombreCliente
+                                </td>
+
+                                <td>
+                                    @item.CURP
+                                </td>
+
+                                <td>
+                                    @item.RFC
+                                </td>
+
+                                <td>
+                                    @item.Telefono
+                                </td>
+
+                                <td>
+                                    @item.FechaCreacion.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+
+                                    <div class="btn-group">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-info btn-sm text-white">
+                                             Ver
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-warning btn-sm">
+                                             Editar
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger btn-sm">
+                                             Eliminar
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                    }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+        
+
+    </div>

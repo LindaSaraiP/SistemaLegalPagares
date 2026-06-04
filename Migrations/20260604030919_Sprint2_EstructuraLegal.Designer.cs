@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaLegalPagares.Data;
 
@@ -11,9 +12,11 @@ using SistemaLegalPagares.Data;
 namespace SistemaLegalPagares.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260604030919_Sprint2_EstructuraLegal")]
+    partial class Sprint2_EstructuraLegal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,85 +230,6 @@ namespace SistemaLegalPagares.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SistemaLegalPagares.Models.Deudor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CURP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Correo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Direccion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("INE")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NombreCompleto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RFC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Deudores");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Expediente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CURP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Direccion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("INE")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NombreCliente")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumeroExpediente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Observaciones")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RFC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Expedientes");
-                });
-
             modelBuilder.Entity("SistemaLegalPagares.Models.Pagare", b =>
                 {
                     b.Property<int>("Id")
@@ -314,63 +238,37 @@ namespace SistemaLegalPagares.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Acreedor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExpedienteId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaExpedicion")
+                    b.Property<DateTime>("FechaPago")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaPago")
+                    b.Property<DateTime>("FechaSuscripcion")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("FechaSuscripcion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaVencimiento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirmaBase64")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirmaSuscriptor")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LugarExpedicion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LugarPago")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LugarSuscripcion")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Monto")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("MontoLetra")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MontoTotal")
+                    b.Property<decimal>("Monto")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("NombreBeneficiario")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreSuscriptor")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumeroExpediente")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumeroPagare")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TextoLegal")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsuarioId")
@@ -378,51 +276,7 @@ namespace SistemaLegalPagares.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpedienteId");
-
                     b.ToTable("Pagares");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.PagareDeudor", b =>
-                {
-                    b.Property<int>("PagareId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeudorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PagareId", "DeudorId");
-
-                    b.HasIndex("DeudorId");
-
-                    b.ToTable("PagareDeudores");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.SubPagare", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaVencimiento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PagareId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PagareId");
-
-                    b.ToTable("SubPagares");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -474,59 +328,6 @@ namespace SistemaLegalPagares.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Pagare", b =>
-                {
-                    b.HasOne("SistemaLegalPagares.Models.Expediente", "Expediente")
-                        .WithMany("Pagares")
-                        .HasForeignKey("ExpedienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Expediente");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.PagareDeudor", b =>
-                {
-                    b.HasOne("SistemaLegalPagares.Models.Deudor", "Deudor")
-                        .WithMany()
-                        .HasForeignKey("DeudorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SistemaLegalPagares.Models.Pagare", "Pagare")
-                        .WithMany("PagareDeudores")
-                        .HasForeignKey("PagareId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Deudor");
-
-                    b.Navigation("Pagare");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.SubPagare", b =>
-                {
-                    b.HasOne("SistemaLegalPagares.Models.Pagare", "Pagare")
-                        .WithMany("SubPagares")
-                        .HasForeignKey("PagareId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pagare");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Expediente", b =>
-                {
-                    b.Navigation("Pagares");
-                });
-
-            modelBuilder.Entity("SistemaLegalPagares.Models.Pagare", b =>
-                {
-                    b.Navigation("PagareDeudores");
-
-                    b.Navigation("SubPagares");
                 });
 #pragma warning restore 612, 618
         }
