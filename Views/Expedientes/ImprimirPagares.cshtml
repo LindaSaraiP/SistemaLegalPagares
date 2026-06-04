@@ -300,22 +300,40 @@
                 </td>
 
                 <td class="text-center align-bottom">
-                    <div class="firma-linea">
-                        FIRMA(S)
+
+                    <div class="firma-box">
+
+                        @if (!string.IsNullOrWhiteSpace(pagare.FirmaAvalBase64))
+        {
+                        <img src="@pagare.FirmaAvalBase64" class="firma-img" />
+        }
+
+                        <div class="firma-linea">
+                            FIRMA(S) AVAL
+                        </div>
+
                     </div>
+
                 </td>
 
                 <td class="text-center align-bottom">
-                    @if (!string.IsNullOrWhiteSpace(pagare.FirmaBase64))
-                            {
-                    <img src="@pagare.FirmaBase64"
-                         class="firma-img" />
-                            }
 
-                    <div class="firma-linea">
-                        FIRMA(S)
+                    <div class="firma-box">
+
+                        @if (!string.IsNullOrWhiteSpace(pagare.FirmaBase64))
+        {
+                        <img src="@pagare.FirmaBase64" class="firma-img" />
+        }
+
+                        <div class="firma-linea">
+                            FIRMA(S) DEUDOR
+                        </div>
+
                     </div>
+
                 </td>
+
+
             </tr>
         </table>
 

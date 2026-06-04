@@ -64,8 +64,11 @@ namespace SistemaLegalPagares.Models
         [Display(Name = "Texto Legal")]
         public string? TextoLegal { get; set; }
 
-        [Display(Name = "Firma")]
+        [Display(Name = "Firma del Deudor")]
         public string? FirmaBase64 { get; set; }
+
+        [Display(Name = "Firma del Aval")]
+        public string? FirmaAvalBase64 { get; set; }
 
         public string? UsuarioId { get; set; }
 

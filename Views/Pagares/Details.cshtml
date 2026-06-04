@@ -183,42 +183,40 @@
                 <br /><br />
 
             </td>
-
-            <td>
+            <td class="text-center align-bottom">
 
                 <div class="firma-box">
 
-                    @if (!string.IsNullOrEmpty(Model.FirmaBase64))
-                    {
-                    <img src="@Model.FirmaBase64"
-                         style="max-width:100%; max-height:100px;" />
-                    }
+                    @if (!string.IsNullOrEmpty(Model.FirmaAvalBase64))
+        {
+                    <img src="@Model.FirmaAvalBase64" class="firma-img" />
+        }
 
-                    <div class="firma-label">
-                        FIRMA(S)
+                    <div class="firma-linea">
+                        FIRMA(S) AVAL
                     </div>
 
                 </div>
 
             </td>
 
-            <td>
+            <td class="text-center align-bottom">
 
                 <div class="firma-box">
 
                     @if (!string.IsNullOrEmpty(Model.FirmaBase64))
-                    {
-                    <img src="@Model.FirmaBase64"
-                         style="max-width:100%; max-height:100px;" />
-                    }
+        {
+                    <img src="@Model.FirmaBase64" class="firma-img" />
+        }
 
-                    <div class="firma-label">
-                        FIRMA(S)
+                    <div class="firma-linea">
+                        FIRMA(S) DEUDOR
                     </div>
 
                 </div>
 
             </td>
+
 
         </tr>
 
