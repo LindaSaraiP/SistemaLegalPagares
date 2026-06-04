@@ -1,0 +1,332 @@
+@model SistemaLegalPagares.Models.Expediente
+
+@{
+    ViewData["Title"] = "Imprimir Pagarés del Expediente";
+    var totalPagares = Model.Pagares?.Count() ?? 0;
+    var contador = 1;
+}
+
+<style>
+    .acciones-impresion {
+        margin-bottom: 25px;
+    }
+
+    .pagare-print {
+        background: #d8f0c8;
+        border: 3px solid #6b4f2a;
+        padding: 15px;
+        font-family: Arial, sans-serif;
+        color: black;
+        margin-bottom: 30px;
+        page-break-inside: avoid;
+    }
+
+    .pagare-print table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    .pagare-print th,
+    .pagare-print td {
+        border: 1px solid black;
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .titulo-pagare {
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .texto-pagare {
+        text-align: justify;
+        line-height: 1.6;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+    .cantidad-linea {
+        border-bottom: 1px solid black;
+        padding: 4px;
+        font-weight: bold;
+        min-height: 28px;
+    }
+
+    .firma-img {
+        max-width: 180px;
+        max-height: 70px;
+        display: block;
+        margin: 0 auto 8px auto;
+    }
+
+    .firma-linea {
+        border-top: 1px solid black;
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 5px;
+    }
+
+    @@media print {
+        nav,
+        footer,
+        .acciones-impresion,
+        .btn,
+        .navbar {
+            display: none !important;
+        }
+
+        body {
+            background: white !important;
+            padding-top: 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        @@page {
+            size: letter;
+            margin: 8mm;
+        }
+
+        .container {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .pagare-print {
+            background: #d8f0c8 !important;
+            border: 3px solid #6b4f2a !important;
+            margin-bottom: 18px !important;
+            transform: scale(0.92);
+            transform-origin: top center;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .pagare-print th,
+        .pagare-print td {
+            font-size: 10px !important;
+            padding: 3px !important;
+        }
+
+        .texto-pagare {
+            font-size: 10px !important;
+            line-height: 1.35 !important;
+        }
+
+        .titulo-pagare {
+            font-size: 18px !important;
+            margin-bottom: 5px !important;
+        }
+
+        .firma-linea {
+            margin-top: 35px !important;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="acciones-impresion d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="fw-bold">Pagarés del Expediente @Model.NumeroExpediente</h2>
+
+            @if (Model.Cliente != null)
+            {
+            <p class="text-muted mb-0">
+                Cliente: @Model.Cliente.NombreCompleto
+            </p>
+            }
+        </div>
+
+        <div>
+            <button type="button"
+                    onclick="window.print()"
+                    class="btn btn-success">
+                Imprimir / Guardar como PDF
+            </button>
+
+            <a asp-action="Details"
+               asp-route-id="@Model.Id"
+               class="btn btn-secondary">
+                Volver
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Pagares == null || !Model.Pagares.Any())
+    {
+    <div class="alert alert-warning">
+        Este expediente no tiene pagarés registrados.
+    </div>
+    }
+    else
+    {
+        foreach (var pagare in Model.Pagares.OrderBy(p => p.Id))
+        {
+    <div class="pagare-print">
+
+        <div class="titulo-pagare">
+            PAGARÉ
+        </div>
+
+        <table>
+            <tr>
+                <th style="width:20%">PAGARÉ</th>
+                <th style="width:28%">LUGAR DE EXPEDICIÓN</th>
+                <th>DÍA</th>
+                <th>MES</th>
+                <th>AÑO</th>
+                <th style="width:20%">BUENO POR</th>
+            </tr>
+
+            <tr>
+                <td>
+                    No. @(pagare.NumeroPagare ?? $"{contador} de {totalPagares}")
+                </td>
+
+                <td>
+                    @pagare.LugarExpedicion
+                </td>
+
+                <td>
+                    @pagare.FechaExpedicion.Day
+                </td>
+
+                <td>
+                    @pagare.FechaExpedicion.Month
+                </td>
+
+                <td>
+                    @pagare.FechaExpedicion.Year
+                </td>
+
+                <td class="fw-bold">
+                    $@pagare.MontoTotal.ToString("N2")
+                </td>
+            </tr>
+        </table>
+
+        <div class="texto-pagare">
+            Debo(emos) y pagaré(mos) incondicionalmente sin pretexto este pagaré
+            en el lugar y fechas citadas donde elija el tenedor el día de su
+            vencimiento a la orden de
+
+            <strong>
+                @pagare.NombreSuscriptor
+            </strong>
+
+            en
+
+            <strong>
+                @pagare.LugarPagoPagare
+            </strong>
+
+            el día
+
+            <strong>
+                @pagare.FechaVencimiento.Day
+            </strong>
+
+            de
+
+            <strong>
+                @pagare.FechaVencimiento.Month
+            </strong>
+
+            de
+
+            <strong>
+                @pagare.FechaVencimiento.Year
+            </strong>.
+        </div>
+
+        <div class="mt-3">
+            <strong>La cantidad de:</strong>
+
+            <div class="cantidad-linea">
+                @(string.IsNullOrWhiteSpace(pagare.MontoLetra)
+                            ? "MONTO EN LETRA PENDIENTE"
+                            : pagare.MontoLetra)
+            </div>
+        </div>
+
+        <div class="texto-pagare">
+            VALOR RECIBIDO A MI (NUESTRA) ENTERA SATISFACCIÓN, ESTE PAGARÉ
+            FORMA PARTE DE UNA SERIE NUMERADA DEL
+
+            <strong>@pagare.SerieDesde</strong>
+
+            AL
+
+            <strong>@pagare.SerieHasta</strong>
+
+            Y TODOS ESTÁN SUJETOS DE QUE NO PAGARSE CUALQUIERA DE ELLOS A SU
+            VENCIMIENTO, SERÁN EXIGIBLES TODOS LOS QUE LE SIGUEN EN NÚMERO,
+            ADEMÁS DE LOS YA VENCIDOS.
+
+            CAUSARÁN INTERESES MORATORIOS DEL
+
+            <strong>@pagare.InteresMoratorio</strong>%
+
+            POR CADA MES O FRACCIÓN PAGADERO JUNTAMENTE CON EL PRINCIPAL.
+        </div>
+
+        <table class="mt-3">
+            <tr>
+                <th style="width:45%">NOMBRE Y DATOS DEL DEUDOR</th>
+                <th style="width:20%">AVAL</th>
+                <th style="width:35%">DEUDOR</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>NOMBRE:</strong>
+                    @pagare.NombreSuscriptor
+
+                    <br /><br />
+
+                    <strong>DOMICILIO:</strong>
+                    @pagare.DomicilioDeudor
+
+                    <br /><br />
+
+                    <strong>POBLACIÓN:</strong>
+                    @pagare.PoblacionDeudor
+                </td>
+
+                <td class="text-center align-bottom">
+                    <div class="firma-linea">
+                        FIRMA(S)
+                    </div>
+                </td>
+
+                <td class="text-center align-bottom">
+                    @if (!string.IsNullOrWhiteSpace(pagare.FirmaBase64))
+                            {
+                    <img src="@pagare.FirmaBase64"
+                         class="firma-img" />
+                            }
+
+                    <div class="firma-linea">
+                        FIRMA(S)
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="mt-2" style="font-size:11px;">
+            <strong>EXPEDIENTE:</strong> @Model.NumeroExpediente
+        </div>
+
+    </div>
+
+            contador++;
+        }
+    }
+
+</div>

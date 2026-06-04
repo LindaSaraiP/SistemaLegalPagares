@@ -155,7 +155,12 @@
                class="btn btn-light btn-sm">
                 Crear Pagaré
             </a>
-
+            <a asp-controller="Expedientes"
+               asp-action="ImprimirPagares"
+               asp-route-id="@Model.Id"
+               class="btn btn-success btn-sm">
+                Imprimir todos
+            </a>
         </div>
 
         <div class="card-body p-0">

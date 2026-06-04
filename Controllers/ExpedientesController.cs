@@ -204,5 +204,21 @@ namespace SistemaLegalPagares.Controllers
         {
             return _context.Expedientes.Any(e => e.Id == id);
         }
+
+        //IMPRIMIR VARIOS PAGARES
+        public async Task<IActionResult> ImprimirPagares(int id)
+        {
+            var expediente = await _context.Expedientes
+                .Include(e => e.Cliente)
+                .Include(e => e.Pagares)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (expediente == null)
+            {
+                return NotFound();
+            }
+
+            return View(expediente);
+        }
     }
 }
